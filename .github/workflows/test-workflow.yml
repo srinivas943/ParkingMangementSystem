@@ -1,0 +1,21 @@
+name: Test GitHub Token
+on:
+  push:
+    branches:
+      - main  # Run on every push to main branch
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Create an Issue using GITHUB_TOKEN
+      run: |
+        curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          -d '{"title": "Sample Issue","body": "This is a test issue created using GITHUB_TOKEN"}' \
+          https://api.github.com/repos/${{ github.repository }}/issues
